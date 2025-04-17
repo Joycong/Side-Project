@@ -1,0 +1,26 @@
+kiwi: 키위
+xylophone: 실로폰
+queen: 여왕
+yellow: 노란색
+apple: 사과
+lemon: 레몬
+ice cream: 아이스크림
+cat: 고양이
+rabbit: 토끼
+watermelon: 수박
+banana: 바나나
+zebra: 얼룩말
+umbrella: 우산
+strawberry: 딸기
+violet: 보라색
+grape: 포도
+nest: 둥지
+tiger: 호랑이
+mango: 망고
+horse: 말
+orange: 오렌지
+pineapple: 파인애플
+fish: 물고기
+jungle: 정글
+dog: 개
+elephant: 코끼리

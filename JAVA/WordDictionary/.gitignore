@@ -1,0 +1,21 @@
+# 클래스 파일 무시
+*.class
+
+# 실행 중 생성되는 파일 무시
+*.log
+
+# OS 및 IDE 관련
+.DS_Store
+Thumbs.db
+
+# IntelliJ / Eclipse / VS Code 등
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+*.bak
+
+# 빌드 결과물
+/out/
+bin/
