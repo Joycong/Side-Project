@@ -66,8 +66,13 @@ public class WordDictionary extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String word = wordField.getText();
                 String meaning = JOptionPane.showInputDialog("뜻을 입력하세요:");
-                dictionary.put(word, meaning);
-                meaningArea.setText("단어가 추가되었습니다.");
+
+                if (meaning != null && !meaning.trim().isEmpty()) {
+                    dictionary.put(word, meaning);
+                    meaningArea.setText("단어가 추가되었습니다.");
+                } else {
+                    meaningArea.setText("단어 추가가 취소되었습니다.");
+                }
             }
         });
 
