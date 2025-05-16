@@ -32,9 +32,7 @@ PyGame을 활용한 간단한 공 피하기 게임입니다.
 
     pip install pygame
 
----
-
-## ▶️ 게임 실행
+### 3. ▶️ 게임 실행
 
     python dodge_game.py
 
