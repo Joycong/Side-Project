@@ -25,7 +25,7 @@ PyGame을 활용한 간단한 공 피하기 게임입니다.
     # 가상환경 활성화
     venv\Scripts\activate
 
-    # macOSLinux 사용자의 경우
+    # macOS/Linux 사용자의 경우
     source venv/bin/activate
 
 ### 2. 필요한 라이브러리 설치
