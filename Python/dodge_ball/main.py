@@ -2,6 +2,7 @@
 
 import pygame
 import time
+import random
 from config import *
 from player import Player
 from ball import Ball
@@ -30,6 +31,8 @@ state = {
 }
 
 running = True
+last_animated_time = time.time()  # 3초마다 애니메이션 고양이
+
 while running:
     screen.fill(WHITE)
     now = time.time()
@@ -43,12 +46,39 @@ while running:
     if not state["game_over"]:
         player.move(keys)
 
+        # 모드 판별: calm or wild
+        is_any_wild = any(ball.get_mode() == "wild" for ball in balls)
+        current_mode = "wild" if is_any_wild else "calm"
+
+        # 음악 및 공 속도 설정
+        if current_mode == "wild":
+            current_speed = INITIAL_BALL_SPEED + 5 # 가속 설정
+            sound.play_random_mode()
+        else:
+            current_speed = INITIAL_BALL_SPEED
+            sound.stop_mode_sound()
+
         # 난이도 조절 (공 수 증가)
         elapsed = int(now - state["start_time"])
-        target_ball_count = 1 + (elapsed // BALL_ADD_INTERVAL)
+        target_ball_count = 1 + int((elapsed / BALL_ADD_INTERVAL) ** 0.7)  # 완화된 난이도
+
         while len(balls) < target_ball_count:
-            balls.append(Ball(INITIAL_BALL_SPEED))
+            animated = False
+            if time.time() - last_animated_time >= 3:
+                animated = True
+                last_animated_time = time.time()
+
+            new_ball = Ball(current_speed, animated=animated, sound=sound)
+            balls.append(new_ball)
+
+            # ✅ 새 공이 wild 모드이면 음악 재생
+            if new_ball.get_mode() == "wild":
+                sound.play_random_mode()
+
+            # 공 생성 시 효과음
             sound.play_random_ball()
+            if animated:
+                sound.play_random_ball()
 
         # 공 이동
         for ball in balls:
@@ -77,6 +107,7 @@ while running:
                 break
 
     else:
+        sound.stop_mode_sound()
         if keys[pygame.K_r]:
             player = Player()
             balls = [Ball(INITIAL_BALL_SPEED)]
