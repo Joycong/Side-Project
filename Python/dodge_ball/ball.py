@@ -83,16 +83,18 @@ class Ball:
     def get_rect(self):
         img = self.frames[self.current_frame]
         if self.animated:
-            offset_x = 42
-            offset_y = 52
+            offset_x = 52
+            offset_y = 62
+            shift_left = 5
         else:
             offset_x = 12
-            offset_y = 10
+            offset_y = 15
+            shift_left = 2
 
         width = img.get_width() - 2 * offset_x
         height = img.get_height() - 2 * offset_y
-        return pygame.Rect(self.x + offset_x, self.y + offset_y, width, height)
+        return pygame.Rect(self.x + offset_x - shift_left, self.y + offset_y, width, height)
 
     def draw(self, screen):
         screen.blit(self.frames[self.current_frame], (self.x, self.y))
-        pygame.draw.rect(screen, (0, 255, 0), self.get_rect(), 2)
+        # pygame.draw.rect(screen, (0, 255, 0), self.get_rect(), 2) # 디버깅 용 충돌범위 표기

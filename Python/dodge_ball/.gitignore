@@ -1,6 +1,6 @@
 # 가상환경 제외
 game_env/
 
-# 캐시 제외
-echo "*.pyc" >> .gitignore
-echo "__pycache__/" >> .gitignore
+# 파이썬 캐시 제외
+__pycache__/
+*.pyc

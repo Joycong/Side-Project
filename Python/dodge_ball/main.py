@@ -68,7 +68,13 @@ while running:
                 animated = True
                 last_animated_time = time.time()
 
-            new_ball = Ball(current_speed, animated=animated, sound=sound)
+            if animated:
+                speed = INITIAL_BALL_SPEED  # 큰 고양이: 속도는 update()에서 조절
+            else:
+                speed = random.randint(3, 6)  # 작은 고양이: 낙하 속도 랜덤
+
+            new_ball = Ball(speed, animated=animated, sound=sound)
+
             balls.append(new_ball)
 
             # ✅ 새 공이 wild 모드이면 음악 재생
