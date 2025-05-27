@@ -1,0 +1,43 @@
+body {
+  font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 40px;
+  background: #f0f0f0;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+#puzzle {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  grid-template-rows: repeat(3, 100px);
+  gap: 5px;
+}
+
+.tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+  background-color: #4caf50;
+  color: white;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.empty {
+  background-color: transparent;
+  cursor: default;
+}
+
+#message {
+  margin-top: 20px;
+  font-size: 20px;
+  color: #333;
+}
