@@ -1,6 +1,9 @@
 const puzzle = document.getElementById("puzzle");
 const message = document.getElementById("message");
-let tiles = [...Array(8).keys()].map((n) => n + 1).concat(null); // [1,2,...,8,null]
+const moveCountDisplay = document.getElementById("moveCount");
+
+let tiles = [...Array(8).keys()].map((n) => n + 1).concat(null); // [1~8, null]
+let moveCount = 0;
 
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -14,6 +17,10 @@ function isSolved() {
     if (tiles[i] !== i + 1) return false;
   }
   return true;
+}
+
+function updateMoveCount() {
+  moveCountDisplay.textContent = `이동 횟수: ${moveCount}`;
 }
 
 function render() {
@@ -42,9 +49,11 @@ function moveTile(index) {
 
   if (validMoves.includes(emptyIndex)) {
     [tiles[index], tiles[emptyIndex]] = [tiles[emptyIndex], tiles[index]];
+    moveCount++;
+    updateMoveCount();
     render();
     if (isSolved()) {
-      message.textContent = "🎉 퍼즐을 완성했습니다!";
+      message.textContent = `🎉 퍼즐을 완성했습니다! 총 이동 횟수: ${moveCount}`;
     }
   }
 }
@@ -52,13 +61,15 @@ function moveTile(index) {
 function startGame() {
   do {
     shuffle(tiles);
-  } while (isSolved()); // 정답 상태로 시작되지 않도록
+  } while (isSolved());
 
+  moveCount = 0;
+  updateMoveCount();
   message.textContent = "";
   render();
 }
 
-startGame();
-
 // 리셋
 document.getElementById("resetButton").addEventListener("click", startGame);
+
+startGame();
