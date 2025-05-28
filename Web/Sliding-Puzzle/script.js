@@ -59,3 +59,6 @@ function startGame() {
 }
 
 startGame();
+
+// 리셋
+document.getElementById("resetButton").addEventListener("click", startGame);
