@@ -49,6 +49,7 @@ function moveTile(index) {
 
   if (validMoves.includes(emptyIndex)) {
     [tiles[index], tiles[emptyIndex]] = [tiles[emptyIndex], tiles[index]];
+    playRandomSound(); // 랜덤 효과음 재생
     moveCount++;
     updateMoveCount();
     render();
@@ -67,6 +68,21 @@ function startGame() {
   updateMoveCount();
   message.textContent = "";
   render();
+}
+
+// 사운드
+const soundFiles = [
+  "sounds/click1.wav",
+  "sounds/click2.wav",
+  "sounds/click3.wav",
+  "sounds/click4.wav",
+  "sounds/click5.wav",
+];
+
+function playRandomSound() {
+  const randomIndex = Math.floor(Math.random() * soundFiles.length);
+  const sound = new Audio(soundFiles[randomIndex]);
+  sound.play(); // 겹쳐도 재생되도록 새 인스턴스 사용
 }
 
 // 리셋
