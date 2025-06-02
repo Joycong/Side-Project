@@ -1,91 +1,134 @@
 const puzzle = document.getElementById("puzzle");
-const message = document.getElementById("message");
-const moveCountDisplay = document.getElementById("moveCount");
-
-let tiles = [...Array(8).keys()].map((n) => n + 1).concat(null); // [1~8, null]
+const tiles = [];
+let emptyX = 2;
+let emptyY = 2;
 let moveCount = 0;
+let bestScore = localStorage.getItem("bestScore");
 
-function shuffle(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
+const sounds = [
+  new Audio("sounds/click1.mp3"),
+  new Audio("sounds/click2.mp3"),
+  new Audio("sounds/click3.mp3"),
+  new Audio("sounds/click4.mp3"),
+  new Audio("sounds/click5.mp3"),
+];
+
+// 퍼즐 초기화
+function initTiles() {
+  tiles.length = 0;
+  let numbers = [...Array(8).keys()].map((n) => n + 1);
+  numbers.sort(() => Math.random() - 0.5);
+  numbers.push(null);
+
+  for (let i = 0; i < 9; i++) {
+    tiles.push(numbers[i]);
+  }
+  emptyX = 2;
+  emptyY = 2;
+}
+
+// 퍼즐 그리기
+function render() {
+  puzzle.innerHTML = "";
+  for (let y = 0; y < 3; y++) {
+    for (let x = 0; x < 3; x++) {
+      const value = tiles[y * 3 + x];
+      const tile = document.createElement("div");
+      tile.className = value ? "tile" : "tile empty";
+      tile.textContent = value || "";
+      tile.dataset.x = x;
+      tile.dataset.y = y;
+      puzzle.appendChild(tile);
+    }
   }
 }
 
+// 타일 이동
+function moveTile(x, y) {
+  const dx = Math.abs(x - emptyX);
+  const dy = Math.abs(y - emptyY);
+  if (dx + dy === 1) {
+    const fromIdx = y * 3 + x;
+    const toIdx = emptyY * 3 + emptyX;
+    [tiles[fromIdx], tiles[toIdx]] = [tiles[toIdx], tiles[fromIdx]];
+    emptyX = x;
+    emptyY = y;
+    moveCount++;
+    document.getElementById(
+      "moveCount"
+    ).textContent = `이동 횟수: ${moveCount}`;
+
+    // 랜덤 사운드
+    const randomSound = sounds[Math.floor(Math.random() * sounds.length)];
+    randomSound.play();
+
+    render();
+    if (isSolved()) {
+      setTimeout(() => {
+        alert("퍼즐 완성!");
+      }, 100);
+
+      // 최고 기록 갱신
+      if (bestScore === null || moveCount < bestScore) {
+        bestScore = moveCount;
+        localStorage.setItem("bestScore", bestScore);
+        updateBestScoreUI();
+      }
+    }
+  }
+}
+
+// 퍼즐 완성 상태 체크
 function isSolved() {
   for (let i = 0; i < 8; i++) {
     if (tiles[i] !== i + 1) return false;
   }
-  return true;
-}
-
-function updateMoveCount() {
-  moveCountDisplay.textContent = `이동 횟수: ${moveCount}`;
-}
-
-function render() {
-  puzzle.innerHTML = "";
-  tiles.forEach((value, i) => {
-    const tile = document.createElement("div");
-    tile.className = "tile";
-    if (value === null) {
-      tile.classList.add("empty");
-    } else {
-      tile.textContent = value;
-      tile.addEventListener("click", () => moveTile(i));
-    }
-    puzzle.appendChild(tile);
-  });
-}
-
-function moveTile(index) {
-  const emptyIndex = tiles.indexOf(null);
-  const validMoves = [
-    index - 3, // 위
-    index + 3, // 아래
-    index % 3 !== 0 ? index - 1 : -1, // 왼쪽
-    index % 3 !== 2 ? index + 1 : -1, // 오른쪽
-  ];
-
-  if (validMoves.includes(emptyIndex)) {
-    [tiles[index], tiles[emptyIndex]] = [tiles[emptyIndex], tiles[index]];
-    playRandomSound(); // 랜덤 효과음 재생
-    moveCount++;
-    updateMoveCount();
-    render();
-    if (isSolved()) {
-      message.textContent = `🎉 퍼즐을 완성했습니다! 총 이동 횟수: ${moveCount}`;
-    }
-  }
-}
-
-function startGame() {
-  do {
-    shuffle(tiles);
-  } while (isSolved());
-
-  moveCount = 0;
-  updateMoveCount();
-  message.textContent = "";
-  render();
-}
-
-// 사운드
-const soundFiles = [
-  "sounds/click1.wav",
-  "sounds/click2.wav",
-  "sounds/click3.wav",
-  "sounds/click4.wav",
-  "sounds/click5.wav",
-];
-
-function playRandomSound() {
-  const randomIndex = Math.floor(Math.random() * soundFiles.length);
-  const sound = new Audio(soundFiles[randomIndex]);
-  sound.play(); // 겹쳐도 재생되도록 새 인스턴스 사용
+  return tiles[8] === null;
 }
 
 // 리셋
-document.getElementById("resetButton").addEventListener("click", startGame);
+function resetPuzzle() {
+  initTiles();
+  moveCount = 0;
+  document.getElementById("moveCount").textContent = `이동 횟수: ${moveCount}`;
+  render();
+}
 
-startGame();
+// 최고 기록 UI 업데이트
+function updateBestScoreUI() {
+  const bestScoreText = bestScore !== null ? `${bestScore}회` : "-";
+  document.getElementById(
+    "bestScore"
+  ).textContent = `최고 기록: ${bestScoreText}`;
+}
+
+// 디버깅용 퍼즐 완성 버튼
+function completePuzzleForTest() {
+  tiles.length = 0;
+  for (let i = 1; i <= 8; i++) {
+    tiles.push(i);
+  }
+  tiles.push(null); // 마지막 빈칸
+  emptyX = 2;
+  emptyY = 2;
+  render();
+}
+
+// 초기화
+initTiles();
+render();
+updateBestScoreUI();
+
+// 이벤트 등록
+puzzle.addEventListener("click", (e) => {
+  if (e.target.classList.contains("tile")) {
+    const x = parseInt(e.target.dataset.x);
+    const y = parseInt(e.target.dataset.y);
+    moveTile(x, y);
+  }
+});
+
+document.getElementById("resetButton").addEventListener("click", resetPuzzle);
+document
+  .getElementById("completeButton")
+  .addEventListener("click", completePuzzleForTest);
