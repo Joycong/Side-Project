@@ -25,6 +25,8 @@
 
 ### 1. 고양이 피하기 게임 (Dodge Game)
 
+![](docs/dodge_ball/oiiaii.gif)
+
 - **설명**: PyGame으로 제작한 2D 고양이 공 피하기 게임
 - **기술**: Python, PyGame
 - **특징**: 점수 시스템, 사운드 효과, 점점 어려워지는 난이도, 큰 고양이 등장 이벤트
