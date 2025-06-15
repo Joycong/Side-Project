@@ -3,7 +3,7 @@
 PyGame을 활용한 간단한 공 피하기 형식의 게임입니다.  
 하늘에서 떨어지는 고양이(공)를 피해 좌우로 움직이며 최대한 오래 살아남으세요!
 
-![](docs/dodge_ball/oiiaii.gif)
+![](../../docs/dodge_ball/oiiaii.gif)
 
 ## 📌 주요 기능
 
