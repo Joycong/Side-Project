@@ -45,6 +45,8 @@
 
 #### ▸ Woogle (구글 클론)
 
+![](docs/Woogle/Woogle.png)
+
 - **설명**: HTML/CSS로 만든 Google 스타일 검색 페이지
 - **기술**: HTML5, CSS3
 - **특징**: 검색창과 버튼만으로 구성, 실제 검색 기능 포함
